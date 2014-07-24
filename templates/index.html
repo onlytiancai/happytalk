@@ -1,0 +1,20 @@
+$def with (user, threads)
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="utf-8" />
+		<title>Happy Talk</title>
+	</head>
+	<body>
+    <h2>欢迎你 $user</h2>
+    <form action="" method="post" accept-charset="utf-8">
+        <textarea name="message" rows="5" cols="100"></textarea>
+        <input type="hidden" name="pid" value="0">
+    <p><input type="submit" value="提交 &rarr;"></p>
+    </form>
+    <ul>
+    $for thread in threads:
+        <li>#$thread.id [$thread.user]: $thread.message</li>        
+    </ul>
+	</body>
+</html>
