@@ -1,20 +1,14 @@
 $def with (user, threads)
-<!DOCTYPE html>
-<html>
-	<head>
-        <meta charset="utf-8" />
-		<title>Happy Talk</title>
-	</head>
-	<body>
-    <h2>欢迎你 $user</h2>
-    <form action="" method="post" accept-charset="utf-8">
-        <textarea name="message" rows="5" cols="100"></textarea>
-        <input type="hidden" name="pid" value="0">
-    <p><input type="submit" value="提交 &rarr;"></p>
-    </form>
-    <ul>
-    $for thread in threads:
-        <li>#$thread.id [$thread.user]: $thread.message</li>        
-    </ul>
-	</body>
-</html>
+<h4>你好 $user 号网友, 欢迎来这里吐槽，所有消息24小时后自动销毁。</h4>
+<form action="" method="post" accept-charset="utf-8">
+    <textarea name="message" rows="5" cols="100" style="width:100%"></textarea>
+    <p class="pull-right" style="margin-top:10px;"><input type="submit" value="走你" class="btn btn-primary"></p>
+</form>
+$for thread in threads:
+    <div class="thread-item">
+        <p class="user">$thread.user 号网友</p>
+        <p class="message">$thread.message</p>
+        <div class="status">
+            <p>$timeinfo(thread.posttime) 后自动销毁</p> 
+        </div>
+    </div>

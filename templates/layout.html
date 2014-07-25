@@ -1,0 +1,61 @@
+$def with (content)
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <title>快来吐 首款匿名微博，吐槽，爆料，发泄的好去处</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css" rel="stylesheet">
+        <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.js"></script>
+        <script src="http://libs.baidu.com/jquery/1.8.2/jquery.js"></script>
+        <style type="text/css" media="screen">
+        body {
+            background-color:#7E93CB;
+        }
+        .main-container {
+            background: #fff;
+            min-height: 500px;
+            border-radius: 15px;
+        }
+        .thread-item {
+            margin: 10px 0px;
+            border-bottom:1px solid #ddd;
+        }
+        .thread-item .user {
+            color: #0078B6; 
+            font-weight: bold;
+        }
+        .thread-item .status {
+            font-size:12px;
+            color: #aaa; 
+        }
+        </style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/">快来吐</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                        <a href="/about">关于</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container" style="margin-top:60px;">
+                <div class="row">
+                    <div class="col-md-6 main-container" style="">
+                        $:content 
+                    </div>
+                </div>
+            </div>
+         </div>
+        <div id="footer">
+            <div class="container">
+                <p style="color:#fff;">&copy; wawasoft 2014.</p>
+            </div>
+        </div>
+    </body>
+</html>
