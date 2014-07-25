@@ -16,3 +16,4 @@ gunicorn talk_web:wsgiapp --log-file log.log -b 0.0.0.0:8080
 - done: 每个槽不能超过140个字
 - todo: 吐槽能自动识别链接，图片和视频
 - todo: 每个槽24小时后自动小时
+- todo: kill -hup gunicron进程，不保存只重新加载model

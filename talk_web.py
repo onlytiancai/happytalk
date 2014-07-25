@@ -30,7 +30,7 @@ class Model(object):
 
     def insert_thread(self, message):
         user = self.get_user()
-        clientip = web.ctx.ip
+        clientip = web.ctx.env.get('HTTP_X_REAL_IP', web.ctx.ip)
         self._check_safe(clientip)
         logging.info("insert thread:%s %s", clientip, message)
         thread = web.storage(id=self.max_thread, user=user, message=message,
