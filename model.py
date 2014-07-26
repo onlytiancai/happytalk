@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 import web
 
-model_db_path = '/data/happytalk.model.test.db'
+model_db_path = '/data/happytalk.model.db'
 max_thread = 100
 max_alive_time = timedelta(hours=24)
 

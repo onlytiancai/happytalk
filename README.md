@@ -5,7 +5,7 @@
 
 ### 启动
 
-gunicorn talk_web:wsgiapp --log-file log.log -b 0.0.0.0:8080
+gunicorn talk_web:wsgiapp --log-file log.log -b localhost:8001 -D
 
 ### TODO
 
