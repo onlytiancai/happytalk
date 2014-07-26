@@ -24,6 +24,8 @@ class Model(object):
         message = message.strip()
         if not message:
             raise TalkException(u'你到底吐还是不吐')
+        if len(message) > 280:
+            raise TalkException(u'你至于吐这么多吗')
         last_active_time = self.clientips.get(clientip)
         if last_active_time and datetime.now() - last_active_time < timedelta(minutes=1):
             raise TalkException(u"亲，你吐的太快了，让别人先吐会儿")
@@ -60,7 +62,7 @@ class IndexHandler(object):
 
     def POST(self):
         data = web.input()
-        model.insert_thread(data.message[:140])
+        model.insert_thread(data.message)
         return web.seeother('/')
 
 class AboutHandler(object):

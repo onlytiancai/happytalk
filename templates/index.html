@@ -1,14 +1,16 @@
 $def with (user, threads)
-<p>你好 $user 号网友, 欢迎来这里匿名吐槽，爆料，所有消息24小时后自动销毁。</p>
+<p>你好 $user 号吐友, 欢迎来这里匿名吐槽，爆料，所有消息24小时后自动销毁。</p>
 <form action="" method="post" accept-charset="utf-8">
     <textarea name="message" rows="5" cols="100" style="width:100%"></textarea>
     <p class="pull-right" style="margin-top:10px;"><input type="submit" value="走你" class="btn btn-primary"></p>
 </form>
 $for thread in threads:
     <div class="thread-item">
-        <p class="user">$thread.user 号网友</p>
+        <p class="user">$thread.user 号吐友</p>
         <p class="message">$thread.message</p>
         <div class="status">
-            <p>$timeinfo(thread.posttime) 后自动销毁</p> 
+            <p class="pull-left">$timeinfo(thread.posttime) 后自动销毁</p> 
+            <p class="pull-right">$thread.id 楼</p> 
+            <div style="clear:both;"></div>
         </div>
     </div>
