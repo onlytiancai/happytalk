@@ -20,38 +20,43 @@ class Model(object):
         self.max_thread = 0
         self.max_user = 0
 
-    def _check_safe(self, clientip):
+    def _check_safe(self, clientip, message):
+        message = message.strip()
+        if not message:
+            raise TalkException(u'你到底吐还是不吐')
         last_active_time = self.clientips.get(clientip)
         if last_active_time and datetime.now() - last_active_time < timedelta(minutes=1):
-            raise TalkException(u"访问太快了亲")
-        self.clientips[clientip] = datetime.now()
+            raise TalkException(u"亲，你吐的太快了，让别人先吐会儿")
         if len(self.threads) > max_thread:
             raise TalkException(u'目前槽点均已吐满，请稍后再试')
+        if minganci_filter(message):
+            raise TalkException(u'亲，不该吐的不要吐, 你懂的')
+        self.clientips[clientip] = datetime.now()
 
     def insert_thread(self, message):
         user = self.get_user()
         clientip = web.ctx.env.get('HTTP_X_REAL_IP', web.ctx.ip)
-        self._check_safe(clientip)
+        self._check_safe(clientip, message)
         logging.info("insert thread:%s %s", clientip, message)
         thread = web.storage(id=self.max_thread, user=user, message=message,
                              posttime=datetime.now())
         self.max_thread += 1
         self.threads.append(thread)
 
-    def set_user(self):
-        if not web.cookies().get('user'):
-            self.max_user += 1
-            web.setcookie('user', self.max_user)
-
     def get_user(self):
-        return web.cookies().get('user', '0')
+        user = web.cookies().get('user')
+        if user:
+            return user
+        self.max_user += 1
+        web.setcookie('user', self.max_user)
+        return self.max_user
 
 
 class IndexHandler(object):
     def GET(self):
-        model.set_user()
+        user = model.get_user()
         threads = sorted(model.threads, key=lambda x: x.posttime, reverse=True)
-        return render.index(model.get_user(), threads)
+        return render.index(user, threads)
 
     def POST(self):
         data = web.input()
@@ -149,11 +154,22 @@ class CleanThread(threading.Thread):
                 time.sleep(60)
 
 def timeinfo(time):
-    diff = datetime.now() + max_alive_time - time
+    diff = time + max_alive_time - datetime.now()
     if diff > timedelta(hours=1):
         return u"%s小时" % int(diff.total_seconds() / 60 / 60)
     return u"%s分钟" % int(diff.total_seconds() / 60)
 
+def load_minganci():
+    for line in open('./minganci.txt'):
+        word = line.strip().decode('utf-8')
+        if word:
+            yield word
+
+def minganci_filter(message):
+    for word in minganci_list:
+        if message.find(word) != -1:
+            return word
+    return None
 
 urls = ["/", IndexHandler,
         "/about", AboutHandler,
@@ -170,6 +186,7 @@ max_alive_time = timedelta(hours=24)
 
 # init
 model = load_model()
+minganci_list = list(load_minganci())
 clean_thread = CleanThread()
 clean_thread.start()
 
